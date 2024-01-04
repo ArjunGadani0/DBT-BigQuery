@@ -22,7 +22,7 @@ models:
     - name: healthy_heart_rate
       description: "A healty heart rate dbt model"
       columns:
-          - name: user_id
+          - name: UserID
             description: "The primary key for this table"
             tests:
                 - unique

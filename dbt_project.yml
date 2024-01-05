@@ -38,6 +38,10 @@ on-run-end:
 # using the `{{ config(...) }}` macro.
 
 models:
+  dbt_artifacts:
+    +database: ANALYTICS # optional, default is your target database
+    +schema: logging # optional, default is your target schema
+    
   my_new_project:
     # Applies to all files under models/example/
     example:

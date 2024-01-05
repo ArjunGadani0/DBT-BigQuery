@@ -1,6 +1,6 @@
 {% macro get_query_run_details() %}
 INSERT
-    `dbt_log.dbt_bq_log` WITH sub AS (
+    `dbt_log.model_logs` WITH sub AS (
         SELECT
             jobs.start_time as job_start_DTS,
             jobs.project_id,

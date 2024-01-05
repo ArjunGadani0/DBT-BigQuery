@@ -1,4 +1,4 @@
-{{ config(materialized='table') }}
+{{ config(materialized='table', tags=['watch_data']) }}
 
 with HeartRateCte as (
     SELECT * 

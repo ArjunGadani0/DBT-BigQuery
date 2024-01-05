@@ -2,12 +2,14 @@
 INSERT
     `dbt_log.model_logs` WITH sub AS (
         SELECT
-            jobs.start_time as job_start_DTS,
+            jobs.start_time as creation_time,
             jobs.project_id,
-            jobs.user_email as job_user,
+            jobs.user_email as user_email,
             jobs.job_id,
             jobs.job_type as job_nature, -- can be load, query, extract or copy
             jobs.statement_type,
+            jobs.start_time,
+            jobs.end_time,
             jobs.total_slot_ms, -- job execution time in milliseconds
             jobs.error_result.reason AS err_reason,
             jobs.error_result.message AS err_message,

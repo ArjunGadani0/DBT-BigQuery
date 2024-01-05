@@ -18,7 +18,7 @@ INSERT
             jobs.dml_statistics.deleted_row_count as rows_deleted,
             jobs.dml_statistics.updated_row_count as rows_updated
         FROM
-            `INFORMATION_SCHEMA.JOBS_BY_USER` jobs
+            `region-us.INFORMATION_SCHEMA.JOBS_BY_USER` jobs
             CROSS JOIN unnest(jobs.labels) AS lbls
         WHERE
             lbls.value = '{{ invocation_id }}'

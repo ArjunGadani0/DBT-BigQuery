@@ -39,9 +39,9 @@ on-run-end:
 
 models:
   dbt_artifacts:
-    +database: ANALYTICS # optional, default is your target database
+    +database: playground-s-11-dcb28ab8 # optional, default is your target database
     +schema: logging # optional, default is your target schema
-    
+
   my_new_project:
     # Applies to all files under models/example/
     example:

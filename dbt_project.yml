@@ -25,8 +25,6 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
-on-run-end:
-  - "{{ dbt_artifacts.upload_results(results) }}"
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
@@ -38,9 +36,8 @@ on-run-end:
 # using the `{{ config(...) }}` macro.
 
 models:
-  dbt_artifacts:
-    +database: playground-s-11-dcb28ab8 # optional, default is your target database
-    +schema: logging # optional, default is your target schema
+  elementary:
+    +schema: "elementary_log"
 
   my_new_project:
     # Applies to all files under models/example/

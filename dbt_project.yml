@@ -12,6 +12,9 @@ profile: 'default'
 # on-run-end:
 #   - "{{get_query_run_details()}}"
 
+on-run-end:
+  - "{{ upload_results(results) }}"
+
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be
 # found in the "models/" directory. You probably won't need to change these!

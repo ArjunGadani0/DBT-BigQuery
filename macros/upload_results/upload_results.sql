@@ -15,7 +15,7 @@
             {% do log("Uploading " ~ dataset.replace("_", " "), true) %}
 
             {# Get the results that need to be uploaded #}
-            {% set objects = dbt_artifacts.get_dataset_content(dataset) %}
+            {% set objects = get_dataset_content(dataset) %}
 
             {# Upload in chunks to reduce query size #}
             {% if dataset == 'model' %}
@@ -28,12 +28,12 @@
             {% for i in range(0, objects | length, upload_limit) -%}
 
                 {# Get just the objects to load on this loop #}
-                {% set content = dbt_artifacts.get_table_content_values(dataset, objects[i: i + upload_limit]) %}
+                {% set content = get_table_content_values(dataset, objects[i: i + upload_limit]) %}
 
                 {# Insert the content into the metadata table #}
-                {{ dbt_artifacts.insert_into_metadata_table(
+                {{ insert_into_metadata_table(
                     dataset=dataset,
-                    fields=dbt_artifacts.get_column_name_list(dataset),
+                    fields=get_column_name_list(dataset),
                     content=content
                     )
                 }}

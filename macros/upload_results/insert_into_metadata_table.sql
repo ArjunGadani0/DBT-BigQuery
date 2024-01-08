@@ -3,7 +3,7 @@
     {% if content != "" %}
 
         {# Get the relation that the results will be uploaded to #}
-        {% set dataset_relation = dbt_artifacts.get_relation(dataset) %}
+        {% set dataset_relation = get_relation(dataset) %}
         {# Insert the data into the table #}
         {{ return(adapter.dispatch('insert_into_metadata_table', 'dbt_artifacts')(dataset_relation, fields, content)) }}
 

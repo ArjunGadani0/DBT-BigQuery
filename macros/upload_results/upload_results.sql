@@ -1,20 +1,50 @@
+{# dbt doesn't like us ref'ing in an operation so we fetch the info from the graph #}
+
 {% macro upload_results(results) -%}
 
     {% if execute %}
 
         {% if results != [] %}
-            {% do log("Uploading model executions", true) %}
-            {% set model_executions = get_relation('model_executions') %}
-            {% set content_model_executions = upload_model_executions(results) %}
-            {{ insert_into_metadata_table(
-                database_name=model_executions.database,
-                schema_name=model_executions.schema,
-                table_name=model_executions.identifier,
-                content=content_model_executions
-                )
-            }}
+            {# When executing, and results are available, then upload the results #}
+            {% set datasets_to_load = ['model_executions'] %}
+
+            {# Upload each data set in turn #}
+            {% for dataset in datasets_to_load %}
+
+                {% do log("Uploading " ~ dataset.replace("_", " "), true) %}
+
+                {# Get the results that need to be uploaded #}
+                {% set objects = get_dataset_content(dataset) %}
+
+                {# Upload in chunks to reduce query size #}
+                {% if dataset == 'model' %}
+                    {% set upload_limit = 50 if target.type == 'bigquery' else 100 %}
+                {% else %}
+                    {% set upload_limit = 300 if target.type == 'bigquery' else 5000 %}
+                {% endif %}
+
+                {# Loop through each chunk in turn #}
+                {% for i in range(0, objects | length, upload_limit) -%}
+
+                    {# Get just the objects to load on this loop #}
+                    {% set content = get_table_content_values(dataset, objects[i: i + upload_limit]) %}
+
+                    {# Insert the content into the metadata table #}
+                    {{ insert_into_metadata_table(
+                        dataset=dataset,
+                        fields=get_column_name_list(dataset),
+                        content=content
+                        )
+                    }}
+
+                {# Loop the next 'chunk' #}
+                {% endfor %}
+
+            {# Loop the next 'dataset' #}
+            {% endfor %}
 
         {% endif %}
-
+        
     {% endif %}
+
 {%- endmacro %}

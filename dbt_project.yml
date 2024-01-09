@@ -47,3 +47,8 @@ models:
     # Applies to all files under models/example/
     example:
       +materialized: table
+
+    dbt_artifacts:
+      +schema: src_dbt_artifact
+      staging:
+        +schema: src_dbt_artifact

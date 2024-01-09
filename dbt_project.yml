@@ -50,5 +50,3 @@ models:
 
   dbt_artifacts:
     +schema: src_dbt_artifact
-    staging:
-      +schema: src_dbt_artifact
